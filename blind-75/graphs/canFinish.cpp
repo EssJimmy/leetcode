@@ -2,14 +2,37 @@
 
 using namespace std;
 
-bool canFinish(int numCourses, vector<vector<int>>& prerequisites){
-    unordered_map<int, unordered_set<int>> mpp;
+enum class State { kInit, kVisiting, kVisited };
 
-    for(auto it : prerequisites){
-        if(mpp.find(it[0]) != mpp.end()) {
-            if(mpp[it[0]].find(it[1]) != mpp[it[0]].end()) return false;
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites){
+        vector<vector<int>> graph(numCourses);
+        vector<State> states(numCourses);
 
-            mpp[it[0]].insert(it[1]);
+        for(auto prereq : prerequisites){
+            const int u = prereq[1];
+            const int v = prereq[0];
+            graph[u].push_back(v);
         }
+
+        for(int i = 0; i < numCourses; i++)
+            if(hasCycle(graph, i, states)) return false;
+
+        return true;
     }
-}
+
+private:
+    bool hasCycle(const vector<vector<int>>& graph, int u, vector<State>& states){
+        if(states[u] == State::kVisiting) return true;
+        if(states[u] == State::kVisited) return false;
+
+        states[u] = State::kVisiting;
+        for(const int v : graph[u])
+            if(hasCycle(graph, v, states)) return true;
+
+        states[u] = State::kVisited;
+
+        return false;
+    }
+};
