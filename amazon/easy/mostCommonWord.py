@@ -2,20 +2,21 @@ class Solution:
     def mostCommonWord(self, paragraph: str, banned: list[str]) -> str:
         symbols = "!?',;."
         word_count = {}
+        banned_set = set(banned)
         
         paragraph = paragraph.lower()
         for s in symbols:
             paragraph = paragraph.replace(s, " ")
 
-        for word in banned:
-            paragraph.replace(word, "")
-
         word_list = paragraph.split()
-        for word in word_list:
-            if word in word_count:
-                word_count[word] += 1
+        for word in list(word_list):
+            if word in banned_set:
+                word_list.remove(word)
             else:
-                word_count[word] = 1
+                if word in word_count:
+                    word_count[word] += 1
+                else:
+                    word_count[word] = 1
 
         max_word = word_list[0].lower()
         max_value = word_count[max_word]
