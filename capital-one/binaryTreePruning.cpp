@@ -15,28 +15,15 @@ struct TreeNode {
 class Solution{
 public:
     TreeNode* pruneTree(TreeNode* root) {
-        if(root->val == 0 && left == nullptr && right == nullptr)
+        if(!root)
             return nullptr;
 
-        pruneTree(root, root->left);
-        pruneTree(root, root->right);
+        root->left = pruneTree(root->left);
+        root->right = pruneTree(root->right);
+
+        if(!root->left && !root->right && root->val == 0)
+            return nullptr;
+
         return root;
-    }
-
-private:
-    void pruneTree(TreeNode* parent, TreeNode* child){
-        if(child->left)
-            pruneTree(child, child->left);
-        
-        if(child->right)
-            pruneTree(child, child->right);
-
-        if(child->val == 0) {
-            if(!child->left && !child->right)
-                child = nullptr;
-            
-            if((child->left && !child->left->val) && (child->right && !child->right->val))
-                child = nullptr;
-        }
     }
 };

@@ -2,22 +2,22 @@
 
 using namespace std;
 
-class Node{
+class ListNode{
 public:
     int val;
-    vector<Node*> neighbors;
+    vector<ListNode*> neighbors;
 
-    Node(){
+    ListNode(){
         val = 0;
-        neighbors = vector<Node*>();
+        neighbors = vector<ListNode*>();
     }
 
-    Node(int _val){
+    ListNode(int _val){
         val = _val;
-        neighbors = vector<Node*>();
+        neighbors = vector<ListNode*>();
     }
 
-    Node(int _val, vector<Node*> _neighbors){
+    ListNode(int _val, vector<ListNode*> _neighbors){
         val = _val;
         neighbors = _neighbors;
     }
@@ -25,21 +25,21 @@ public:
 
 class Solution{
 public:
-    Node* cloneGraph(Node* node){
+    ListNode* cloneGraph(ListNode* node){
         if(node == nullptr) return nullptr;
 
         if(const auto it = map.find(node); it != map.cend()) return it->second;
 
-        Node* newNode = new Node(node->val);
+        ListNode* newNode = new ListNode(node->val);
         map[node] = newNode;
 
-        for(Node* n : node->neighbors)
+        for(ListNode* n : node->neighbors)
             newNode->neighbors.push_back(cloneGraph(n));
 
         return newNode;
     }
 
 private:
-    unordered_map<Node*, Node*> map;
+    unordered_map<ListNode*, ListNode*> map;
 };
 

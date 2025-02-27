@@ -2,40 +2,40 @@
 
 using namespace std;
 
-class Node{
+class ListNode{
 public:
     int val;
-    vector<Node*> neighbors;
+    vector<ListNode*> neighbors;
 
-    Node(){
+    ListNode(){
         val = 0;
-        neighbors = vector<Node*>();
+        neighbors = vector<ListNode*>();
     }
 
-    Node(int _val){
+    ListNode(int _val){
         val = _val;
-        neighbors = vector<Node*>();
+        neighbors = vector<ListNode*>();
     }
 
-    Node(int _val, vector<Node*> _neighbors){
+    ListNode(int _val, vector<ListNode*> _neighbors){
         val = _val;
         neighbors = _neighbors;
     }
 };
 
-Node* cloneGraph(Node* node) {
+ListNode* cloneGraph(ListNode* node) {
     if (node == nullptr)
       return nullptr;
 
-    queue<Node*> q{{node}};
-    unordered_map<Node*, Node*> map{{node, new Node(node->val)}};
+    queue<ListNode*> q{{node}};
+    unordered_map<ListNode*, ListNode*> map{{node, new ListNode(node->val)}};
 
     while (!q.empty()) {
-      Node* u = q.front();
+      ListNode* u = q.front();
       q.pop();
-      for (Node* v : u->neighbors) {
+      for (ListNode* v : u->neighbors) {
         if (map.find(v) != map.end()) { //map.contains(v) is better here but compiler gets nitpicky
-          map[v] = new Node(v->val);
+          map[v] = new ListNode(v->val);
           q.push(v);
         }
         map[u]->neighbors.push_back(map[v]);
