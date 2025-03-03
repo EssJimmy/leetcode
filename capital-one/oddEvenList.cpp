@@ -16,16 +16,28 @@ public:
     ListNode* oddEvenList(ListNode* head) {
         if(!head) return nullptr;
 
-        moveVal(head->next);
-        return head;
-    }
+        ListNode oddHead(0);
+        ListNode evenHead(0);
+        ListNode* odd = &oddHead;
+        ListNode* even = &evenHead;
+        
+        int isOdd = 0;
+        while(head){
+            if(!(isOdd % 2)){
+                odd->next = head;
+                odd = odd->next;
+            }
+            else {
+                even->next = head;
+                even = even->next;
+            }
 
-    void moveVal(ListNode* node){
-        if(!node || !node->next) return;
+            head = head->next;
+            isOdd++;
+        }
 
-        moveVal(node->next);
-        int temp = node->next->val;
-        node->next->val = node->val;
-        node->val = temp;
+        odd->next = evenHead.next;
+        even->next = nullptr;
+        return oddHead.next;
     }
 };
