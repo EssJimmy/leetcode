@@ -15,26 +15,29 @@ class Solution{
 public:
     ListNode* oddEvenList(ListNode* head){
         if(!head) return nullptr;
-        if(!head->next || !head->next->next) return head;
-        int a = 0;
 
-        ListNode* past = head;
-        ListNode* current = head->next;
-        ListNode* next = current->next;
-
-        while(next->next){
-            for(int i = 0; i < a; i++) {
-                next = next->next;
+        ListNode oddHead(0);
+        ListNode evenHead(0);
+        ListNode* odd = &oddHead;
+        ListNode* even = &evenHead;
+        
+        int isOdd = 0;
+        while(head){
+            if(!(isOdd % 2)){
+                odd->next = head;
+                odd = odd->next;
             }
-            past->next = next;
-            current->next = next->next;
-            next->next = current;
-            
-            past = next;
-            next = current->next;
-            a++;
+            else {
+                even->next = head;
+                even = even->next;
+            }
+
+            head = head->next;
+            isOdd++;
         }
-            
-        return head;
+
+        odd->next = evenHead.next;
+        even->next = nullptr;
+        return oddHead.next;
     }
 };
