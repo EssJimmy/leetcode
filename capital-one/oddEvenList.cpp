@@ -13,19 +13,28 @@ struct ListNode {
 
 class Solution{
 public:
-    ListNode* oddEvenList(ListNode* head) {
+    ListNode* oddEvenList(ListNode* head){
         if(!head) return nullptr;
+        if(!head->next || !head->next->next) return head;
+        int a = 0;
 
-        moveVal(head->next);
+        ListNode* past = head;
+        ListNode* current = head->next;
+        ListNode* next = current->next;
+
+        while(next->next){
+            for(int i = 0; i < a; i++) {
+                next = next->next;
+            }
+            past->next = next;
+            current->next = next->next;
+            next->next = current;
+            
+            past = next;
+            next = current->next;
+            a++;
+        }
+            
         return head;
-    }
-
-    void moveVal(ListNode* node){
-        if(!node || !node->next) return;
-
-        moveVal(node->next);
-        int temp = node->next->val;
-        node->next->val = node->val;
-        node->val = temp;
     }
 };
